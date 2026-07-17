@@ -1,0 +1,60 @@
+---
+import { WHATSAPP_BASE_URL } from '../data/siteData';
+---
+
+<section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Background Image -->
+  <div class="absolute inset-0">
+    <img
+      src="/hero-diegos.jpg"
+      alt="Salón Diego's preparado para un evento elegante"
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/40 to-navy/70"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
+    <div class="fade-up">
+      <p class="text-champagne-light text-sm sm:text-base tracking-[0.3em] uppercase mb-6 font-medium">
+        Encarnación de Díaz, Jalisco
+      </p>
+    </div>
+
+    <h1 class="hero-title fade-up font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white font-bold leading-tight mb-6" style="transition-delay: 0.1s;">
+      Momentos inolvidables comienzan en el lugar perfecto
+    </h1>
+
+    <p class="fade-up text-white/85 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" style="transition-delay: 0.2s;">
+      Celebra bodas, XV años, graduaciones, bautizos, primeras comuniones y eventos especiales en un espacio diseñado para hacer realidad tu celebración.
+    </p>
+
+    <div class="fade-up flex flex-col sm:flex-row gap-4 justify-center" style="transition-delay: 0.3s;">
+      <a
+        href={`${WHATSAPP_BASE_URL}?text=${encodeURIComponent('Hola, me gustaría consultar la disponibilidad de una fecha en Salón Diego\'s.')}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-8 py-4 bg-champagne hover:bg-champagne-dark text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 text-base"
+      >
+        Consultar mi fecha
+      </a>
+      <a
+        href="#paquetes"
+        class="px-8 py-4 border-2 border-white/40 hover:border-champagne hover:bg-champagne/10 text-white font-semibold rounded-full transition-all duration-300 text-base"
+      >
+        Ver paquetes
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 fade-in" style="transition-delay: 1s;">
+    <a href="#salon" class="flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors">
+      <span class="text-xs tracking-widest uppercase">Descubre más</span>
+      <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </a>
+  </div>
+</section>

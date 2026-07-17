@@ -1,0 +1,279 @@
+---
+import { NAV_LINKS, WHATSAPP_BASE_URL } from "../data/siteData";
+---
+
+<nav
+  id="navbar"
+  class="fixed top-0 left-0 w-full z-50 bg-transparent"
+>
+  <!-- Contenedor del navbar -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a
+        href="#inicio"
+        class="flex items-center group shrink-0"
+        aria-label="Ir al inicio de Salón Diego's"
+      >
+        <img
+          src="/logo-blanco.png"
+          alt="Logotipo de Salón Diego's"
+          width="160"
+          height="96"
+          class="h-42 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+        />
+      </a>
+
+      <!-- Navegación de escritorio -->
+      <div class="hidden lg:flex items-center gap-1">
+        {
+          NAV_LINKS.map((link) => (
+            <a
+              href={link.href}
+              class="nav-link px-3 py-2 text-sm font-medium text-white/90 hover:text-white transition-colors duration-300 rounded-md"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+
+        <a
+          href={`${WHATSAPP_BASE_URL}?text=${encodeURIComponent(
+            "Hola, me gustaría consultar la disponibilidad en Salón Diego's."
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ml-4 px-5 py-2.5 bg-champagne hover:bg-champagne-dark text-white text-sm font-semibold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+        >
+          Consultar disponibilidad
+        </a>
+      </div>
+
+      <!-- Botón del menú móvil -->
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="lg:hidden relative flex items-center justify-center w-12 h-12 shrink-0 z-50"
+        aria-label="Abrir menú"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+      >
+        <span
+          class="hamburger-line absolute w-7 h-0.5 bg-white rounded-full transition-all duration-300"
+        ></span>
+
+        <span
+          class="hamburger-line absolute w-7 h-0.5 bg-white rounded-full transition-all duration-300"
+        ></span>
+
+        <span
+          class="hamburger-line absolute w-7 h-0.5 bg-white rounded-full transition-all duration-300"
+        ></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú móvil -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden fixed top-28 left-0 right-0 z-40 overflow-y-auto overscroll-contain"
+    aria-hidden="true"
+  >
+    <div class="min-h-full flex flex-col items-center px-6 py-8">
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            class="mobile-menu-close w-full max-w-md py-4 text-center text-lg font-medium text-navy hover:text-champagne border-b border-champagne/15 transition-colors duration-300"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+
+      <a
+        href={`${WHATSAPP_BASE_URL}?text=${encodeURIComponent(
+          "Hola, me gustaría consultar la disponibilidad en Salón Diego's."
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mobile-menu-close mt-8 w-full max-w-md px-6 py-4 bg-champagne hover:bg-champagne-dark text-white text-center font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+      >
+        Consultar disponibilidad
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const navbar = document.getElementById("navbar");
+    const menuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    let menuOpen = false;
+
+    // Fondo dorado al hacer scroll o abrir el menú
+    const handleScroll = () => {
+      navbar?.classList.toggle(
+        "nav-scrolled",
+        window.scrollY > 80 || menuOpen
+      );
+    };
+
+    // Actualizar estado visual y accesibilidad del menú
+    const updateMenu = () => {
+      mobileMenu?.classList.toggle("mobile-menu-open", menuOpen);
+      menuBtn?.classList.toggle("menu-open", menuOpen);
+
+      menuBtn?.setAttribute("aria-expanded", String(menuOpen));
+      menuBtn?.setAttribute(
+        "aria-label",
+        menuOpen ? "Cerrar menú" : "Abrir menú"
+      );
+
+      mobileMenu?.setAttribute("aria-hidden", String(!menuOpen));
+
+      document.body.style.overflow = menuOpen ? "hidden" : "";
+
+      handleScroll();
+    };
+
+    // Abrir y cerrar con el botón
+    menuBtn?.addEventListener("click", () => {
+      menuOpen = !menuOpen;
+      updateMenu();
+    });
+
+    // Cerrar al seleccionar una opción
+    document.querySelectorAll(".mobile-menu-close").forEach((link) => {
+      link.addEventListener("click", () => {
+        menuOpen = false;
+        updateMenu();
+      });
+    });
+
+    // Cerrar con la tecla Escape
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menuOpen) {
+        menuOpen = false;
+        updateMenu();
+      }
+    });
+
+    // Cerrar si se cambia de móvil a escritorio
+    window.addEventListener(
+      "resize",
+      () => {
+        if (window.innerWidth >= 1024 && menuOpen) {
+          menuOpen = false;
+          updateMenu();
+        }
+      },
+      { passive: true }
+    );
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    handleScroll();
+  });
+</script>
+
+<style>
+  /* Fondo dorado del navbar */
+  #navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+
+    background: linear-gradient(
+      110deg,
+      rgba(105, 72, 25, 0.97) 0%,
+      rgba(159, 118, 52, 0.97) 30%,
+      rgba(201, 166, 95, 0.96) 50%,
+      rgba(159, 118, 52, 0.97) 70%,
+      rgba(105, 72, 25, 0.97) 100%
+    );
+
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 30px rgba(65, 43, 13, 0.18);
+
+    transition:
+      opacity 500ms ease,
+      box-shadow 500ms ease;
+  }
+
+  #navbar.nav-scrolled::before {
+    opacity: 1;
+  }
+
+  /* Enlaces blancos después del scroll */
+  #navbar.nav-scrolled .nav-link {
+    color: #ffffff !important;
+  }
+
+  #navbar.nav-scrolled .nav-link:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.55);
+  }
+
+  /* Menú móvil cerrado */
+  #mobile-menu {
+    background-color: #f8f4ec;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(100%);
+    height: calc(100dvh - 7rem);
+
+    transition:
+      transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 300ms ease,
+      visibility 0s linear 450ms;
+  }
+
+  /* Menú móvil abierto */
+  #mobile-menu.mobile-menu-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(0);
+
+    transition:
+      transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 300ms ease,
+      visibility 0s linear 0s;
+  }
+
+  /* Posición inicial de la hamburguesa */
+  #mobile-menu-btn .hamburger-line:nth-child(1) {
+    transform: translateY(-8px);
+  }
+
+  #mobile-menu-btn .hamburger-line:nth-child(2) {
+    transform: translateY(0);
+  }
+
+  #mobile-menu-btn .hamburger-line:nth-child(3) {
+    transform: translateY(8px);
+  }
+
+  /* Transformar hamburguesa en X */
+  #mobile-menu-btn.menu-open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  #mobile-menu-btn.menu-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  #mobile-menu-btn.menu-open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+</style>
